@@ -4,16 +4,6 @@ let ctx2d;
 let t = 0; //時間の管理用
 let initialPfnw = performance.now();//ロード時の起動時間をセット
 let myPos={x:0,y:0};
-const WIDTH = 960, HEIGHT = 540;// キャンバスのサイズを指定
-const START_POS_X=50,START_POS_Y=HEIGHT/2;
-const CHARACTER_SIZE=30, WALL_WIDTH=30;
-const WALL=[ //eventは0なら何もない　1はミス　2はクリア
-    {x:0,y:0,w:WIDTH,h:WALL_WIDTH,col:"rgba(100,100,100,1)"},
-    {x:0,y:0,w:WALL_WIDTH,h:HEIGHT,col:"rgba(100,100,100,1)"},
-    {x:WIDTH-WALL_WIDTH,y:0,w:WALL_WIDTH,h:HEIGHT,col:"rgba(100,100,100,1)"},
-    {x:0,y:HEIGHT-WALL_WIDTH,w:WIDTH,h:WALL_WIDTH,col:"rgba(100,100,100,1)"}
-];
-
 
 window.addEventListener('load', init); //ロード完了後にinitが実行されるように、ロードイベントを登録
 window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベントを登録
@@ -35,7 +25,7 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
 });
 
 function drawTitle(){
-    ctx2d.fillStyle="rgba(255,255,255,1)";
+    ctx2d.fillStyle=COL_TEXT;
     ctx2d.font="32px sans-serif";
     ctx2d.fillText("SQUARE",(WIDTH-ctx2d.measureText("SQUARE").width)/2,HEIGHT/2);
     ctx2d.font="16px sans-serif";
@@ -43,7 +33,7 @@ function drawTitle(){
 }
 
 function drawResult(){
-    ctx2d.fillStyle="rgba(255,255,255,1)";
+    ctx2d.fillStyle=COL_TEXT;
     ctx2d.font="32px sans-serif";
     ctx2d.fillText(resultText,(WIDTH-ctx2d.measureText(resultText).width)/2,HEIGHT/2);
     ctx2d.font="16px sans-serif";
@@ -105,7 +95,7 @@ function moveCharacter(direction){ //移動の処理
     }
 }
 function drawCharacter(myPos){
-    ctx2d.fillStyle="rgba(200,0,0,1)";
+    ctx2d.fillStyle=COL_CHARACTER;
     ctx2d.fillRect(myPos.x,myPos.y,CHARACTER_SIZE,CHARACTER_SIZE);
 }
 function drawObj(obj){
@@ -129,14 +119,14 @@ function init() {
 
 function tick() { //ループ処理
     let obj=[ //eventは0ミス　1はクリア
-        {x:100,y:50,w:10,h:10,col:"rgba(255,0,0,1)",event:0},
-        {x:50,y:100,w:10,h:10,col:"rgba(255,0,0,1)",event:0},
-        {x:200,y:200,w:10,h:10,col:"rgba(150,255,150,1)",event:1}
+        {x:100,y:50,w:10,h:10,col:COL_ENEMY[0],event:0},
+        {x:50,y:100,w:10,h:10,col:COL_ENEMY[1],event:0},
+        {x:200,y:200,w:10,h:10,col:COL_GOAL,event:1}
     ];
 
     t=performance.now()-initialPfnw;    //ゲーム開始からの経過時間をセット
     ctx2d.clearRect(0,0,WIDTH,HEIGHT);  //2次元のリセット処理
-    ctx2d.fillStyle="rgba(30,30,0,1)";
+    ctx2d.fillStyle=COL_BACK;
     ctx2d.fillRect(0,0,WIDTH,HEIGHT);   //背景を描画
 
     if(mode==0){
