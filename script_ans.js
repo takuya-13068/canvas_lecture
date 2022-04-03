@@ -23,6 +23,15 @@ window.addEventListener('DOMContentLoaded', function(){ ///キー入力イベン
                 modeが2ならば、modeを0にする
             参考：上記の例の"ArrowUp"や"ArrowDown"などに該当する部分は、押されたキーがスペースキーの場合、" "(半角スペース1文字)となる
         */
+        // Ans.3
+        if(e.key==" "){//押されたのがスペースキーだったら
+            if(mode==0){ //タイトル画面なら
+                startGame();
+            } else if(mode==2){//リザルト画面なら
+                mode=0;
+            }
+        }
+        //
     });
 });
 //ここで最初の実行は終了
@@ -38,6 +47,12 @@ function drawTitle(){//タイトル画面の描画
         余裕があれば、座標にtを用いて四角形を動かしてみよう(変数"t"には起動からの経過時間がミリ秒単位で格納されている)
         参考：Math.sin(1)で1ラジアンのsinを計算できる
     */
+    // Ans.1(例)
+        ctx2d.fillRect(40,40,40,40);　//ここでは四隅に正方形を描画してみる
+        ctx2d.fillRect(WIDTH-80,HEIGHT-80,40,40);
+        ctx2d.fillRect(WIDTH-80,40,40,40);
+        ctx2d.fillRect(40,HEIGHT-80,40,40);
+    //
     ctx2d.fillStyle=COL_TEXT; //塗りつぶしのスタイルを指定
     ctx2d.font="32px sans-serif"; //フォントを設定
     ctx2d.fillText("SQUARE",(WIDTH-ctx2d.measureText("SQUARE").width)/2,HEIGHT/2-20);//ここで文字を描画
@@ -47,6 +62,11 @@ function drawTitle(){//タイトル画面の描画
         フォントは14〜18px、位置は"SQUARE"よりも若干下側で左右中央。
         余裕があれば、操作説明（「方向キーで移動」「緑を目指そう」etc...)も追加してみよう。
     */
+    // Ans.2
+        ctx2d.font="16px sans-serif";
+        ctx2d.fillText("Press space key",(WIDTH-ctx2d.measureText("Press space key").width)/2,HEIGHT/2+30);
+        //参考：fillStyleは、前の描画時から変更がなければ逐一指定する必要はない
+    //
 }
 
 function drawResult(){//リザルト画面の描画
@@ -55,6 +75,13 @@ function drawResult(){//リザルト画面の描画
         resultTextには"Miss"か"Clear!"が格納されている
         ここまでの内容を参考に、自由にプレイ結果を描画しよう
     */
+    // Ans.6(例)
+    ctx2d.fillStyle=COL_TEXT;
+    ctx2d.font="32px sans-serif";
+    ctx2d.fillText(resultText,(WIDTH-ctx2d.measureText(resultText).width)/2,HEIGHT/2);
+    ctx2d.font="16px sans-serif";
+    ctx2d.fillText("Press space key",(WIDTH-ctx2d.measureText("Press space key").width)/2,HEIGHT/2+50);
+    //
 }
 
 function startGame(){ //ゲームスタートの処理
@@ -97,6 +124,13 @@ function checkColisionWall(direction,MOVE_SPEED){//壁との当たり判定　0�
             当たり判定は、offsetXとoffsetYを考慮して行うこと
             壁の座標情報はWALL[i].x (x,y,w,h)として参照できる
         */
+        // Ans.5
+        if(myPos.x+offsetX < WALL[i].x+WALL[i].w && myPos.x+offsetX + CHARACTER_SIZE > WALL[i].x){
+            if(myPos.y+offsetY < WALL[i].y+WALL[i].h && myPos.y+offsetY + CHARACTER_SIZE > WALL[i].y){
+                return 1;
+            }
+        }
+        //
     }
     return 0;//衝突がない場合、0を返す
 }
@@ -111,6 +145,17 @@ function moveCharacter(direction){ //移動の処理
             directionが"ArrowLeft"なら左に移動する
             directionが"ArrowRight"なら右に移動する
     */
+    // Ans.4
+    if(direction == "ArrowUp"){
+        myPos.y-=MOVE_SPEED;
+    } else if(direction == "ArrowDown"){
+        myPos.y+=MOVE_SPEED;
+    } else if(direction == "ArrowLeft"){
+        myPos.x-=MOVE_SPEED;
+    } else if(direction == "ArrowRight"){
+        myPos.x+=MOVE_SPEED;
+    }
+    //
 }
 function drawCharacter(myPos){//キャラクターの描画処理
     ctx2d.fillStyle=COL_CHARACTER;
