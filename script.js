@@ -3,6 +3,7 @@ let resultText=""; //ゲームの結果　MissかClear
 let ctx2d;
 let t = 0; //時間の管理用
 let initialPfnw = performance.now();//ロード時の起動時間をセット
+let lastPfnw=performance.now();
 let myPos={x:0,y:0};
 
 //まず始めにここが実行される
@@ -101,7 +102,7 @@ function checkColisionWall(direction,MOVE_SPEED){//壁との当たり判定　0�
     return 0;//衝突がない場合、0を返す
 }
 function moveCharacter(direction){ //移動の処理
-    const MOVE_SPEED=10;
+    const MOVE_SPEED=10*(t-lastPfnw)/30;
     if(checkColisionWall(direction,MOVE_SPEED)) return 0;
     /*
     Ex.4
@@ -147,6 +148,7 @@ function tick() { //ループ処理
         参考：座標をtで指定すると、動かすことができる
     */
 
+    lastPfnw=t;//前回のループでの経過時間を移す
     t=performance.now()-initialPfnw;    //ゲーム開始からの経過時間をセット
     ctx2d.clearRect(0,0,WIDTH,HEIGHT);  //2次元のリセット処理
     ctx2d.fillStyle=COL_BACK;
